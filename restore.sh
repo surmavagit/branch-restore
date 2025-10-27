@@ -29,9 +29,9 @@ if [[ $# -gt 1 ]]; then
 	exit 1
 fi
 
-LEAVES=0
+ALL=0
 if [[ "$1" = "-a" ]] || [[ "$1" = "--all" ]]; then
-	LEAVES=1
+	ALL=1
 elif [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
 	printhelp
 	exit 0
@@ -75,15 +75,15 @@ done
 
 sort branch-restore/commits > branch-restore/commitssorted
 
-printleaves () {
+printall () {
 	sort -u branch-restore/parents | diff branch-restore/commitssorted - | grep -Po "(?<=\< )[0-9a-z]*"
 }
 
-if [[ $LEAVES -eq 1 ]]; then
-	printleaves
+if [[ $ALL -eq 1 ]]; then
+	printall
 else
-	printleaves > branch-restore/leaves
-	cat .git/refs/heads/* | sort -u | diff branch-restore/leaves - | grep -Po "(?<=\< )[0-9a-z]*"
+	printall > branch-restore/childless
+	cat .git/refs/heads/* | sort -u | diff branch-restore/childless - | grep -Po "(?<=\< )[0-9a-z]*"
 fi
 
 rm -r branch-restore
