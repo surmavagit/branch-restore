@@ -35,4 +35,4 @@ Select a commit with fzf, preview shows if there is a branch pointing at it or n
 ```
 
 ## PostScriptum
-This script offers almost the same functionality as `git fsck --no-reflogs`. Unlike the latter, it prints only the hashes themselves, without the phrase 'dangling commit' prepended to the results.
+This script offers almost the same functionality as `git fsck --no-reflogs`. Unlike the latter, it prints only the hashes themselves, without the phrase 'dangling commit' prepended to the results. It also provides an `--all` option to list all the childless commits whether there is a branch pointing to them or not.
