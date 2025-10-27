@@ -18,9 +18,12 @@ Either add it to the PATH or provide a relative path to branch-restore.sh file.
 	-h, --help	prints this help message
 
 EXAMPLES:
-	branch-restore.sh | xargs -n1 git cat-file -p
-	branch-restore.sh | fzf --preview='git cat-file -p {}' | xargs git checkout
-	branch-restore.sh -a | fzf --preview='grep -rl {} .git/refs/heads/ | xargs basename 2>/dev/null || echo no branch'"
+	Print all the details of commits to be restored:
+./branch-restore.sh | xargs -n1 git cat-file -p
+	Select a commit with fzf (preview shows its details) and switch to that commit:
+./branch-restore.sh | fzf --preview='git cat-file -p {}' | xargs git checkout
+	Select a commit with fzf, preview shows if there is a branch pointing at it or not:
+./branch-restore.sh -a | fzf --preview='grep -rl {} .git/refs/heads/ | xargs basename 2>/dev/null || echo no branch'"
 }
 
 if [[ $# -gt 1 ]]; then
