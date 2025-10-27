@@ -47,12 +47,17 @@ if [[ ! -d ".git" ]]; then
 	exit 1
 fi
 
+OBJECTFILES=(.git/objects/??/*)
+if [[ ${#OBJECTFILES[@]} -eq 0 ]]; then
+	echo "No objects in this git repository" >&2
+	exit 0
+fi
+
 mkdir branch-restore
 if [[ $? -eq 1 ]]; then
 	exit 1
 fi
 
-OBJECTFILES=(./.git/objects/??/*)
 for FILE in ${OBJECTFILES[@]};
 do
 	FIRSTPART=$(basename $(dirname $FILE))
@@ -78,7 +83,7 @@ if [[ $LEAVES -eq 1 ]]; then
 	printleaves
 else
 	printleaves > branch-restore/leaves
-	cat ./.git/refs/heads/* | sort -u | diff branch-restore/leaves - | grep -Po "(?<=\< )[0-9a-z]*"
+	cat .git/refs/heads/* | sort -u | diff branch-restore/leaves - | grep -Po "(?<=\< )[0-9a-z]*"
 fi
 
 rm -r branch-restore
